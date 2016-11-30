@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+      <id>SitecoreAutoAltTags</id>
+      <title>Sitecore Auto Alt Tags</title>
+      <summary>This module makes use of the Describe Image method on the API to generate a description of an image that has been uploaded into Sitecore, this can then be set as the alt text. You will need to generate a API key for the Computer Vision API and add the key into AutoAltTags.Config for the module to work. An alt tag will be generated upon uploading or saving a media item. If an alt tag is already set it won't be overridden.</summary>
+      <description>This module makes use of the Describe Image method on the API to generate a description of an image that has been uploaded into Sitecore, this can then be set as the alt text. You will need to generate a API key for the Computer Vision API and add the key into AutoAltTags.Config for the module to work. An alt tag will be generated upon uploading or saving a media item. If an alt tag is already set it won't be overridden.</description>
+      <tags>.net c# sitecore</tags>
+      <projectUrl>https://tomdudfield.com/computer-vision-alt-tags-in-sitecore/</projectUrl>
+      <authors>Tom Dudfield</authors>
+      <owners>Tom Dudfield</owners>
+      <version>1.0.0.0</version>
+      <requireLicenseAcceptance>false</requireLicenseAcceptance>
+      <language>en-GB</language>
+      <dependencies>
+        <dependency id="Microsoft.ProjectOxford.Vision" version="1.0.370" />
+      </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\AutoAltTags.dll" target="lib\net45\" />
+        <file src="AutoAltTags.Config" target="content\App_Config\Include\AutoAltTags.Config" />
+    </files>
+</package>
