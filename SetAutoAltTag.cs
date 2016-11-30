@@ -37,13 +37,22 @@ namespace AutoAltTags
                 if (mediaStream == null || mediaStream.Length == 0)
                     return;
 
+
+                if (!string.IsNullOrEmpty(ApiKey))
+                {
+                    Log.Error("SetAutoAltTag: No API Key Specified - Module disabled", GetType());
+                    return;
+                }
+
+                var describeImage = new DescribeImage(ApiKey);
+
                 using (new SecurityDisabler())
                 {
                     using (new EditContext(mediaItem))
                     {
                         try
                         {
-                            mediaItem.Alt = DescribeImage.GetDescription(mediaStream, ApiKey);
+                            mediaItem.Alt = describeImage.GetDescription(mediaStream);
                         }
                         catch (Exception ex)
                         {

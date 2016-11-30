@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
@@ -10,12 +9,19 @@ namespace AutoAltTags
 {
     class DescribeImage
     {
-        public static string GetDescription(Stream stream, string apiKey)
+        private readonly string _apiKey;
+
+        public DescribeImage(string apiKey)
+        {
+            _apiKey = apiKey;
+        }
+
+        public string GetDescription(Stream stream)
         {
             string description = string.Empty;
             stream = ResizeImage(stream, 2048);
 
-            VisionServiceClient visionServiceClient = new VisionServiceClient(apiKey);
+            VisionServiceClient visionServiceClient = new VisionServiceClient(_apiKey);
             var analysisResult = visionServiceClient.DescribeAsync(stream);
 
             if (analysisResult.Result.Description.Captions != null && analysisResult.Result.Description.Captions.Any())
