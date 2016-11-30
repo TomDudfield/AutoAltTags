@@ -35,25 +35,31 @@ namespace AutoAltTags
             using (Image oldImage = Image.FromStream(imageStream))
             {
                 Size newSize = CalculateDimensions(oldImage.Size, maxSize);
-                using (Bitmap newImage = new Bitmap(newSize.Width, newSize.Height, PixelFormat.Format24bppRgb))
+
+                if (newSize != oldImage.Size)
                 {
-                    using (Graphics canvas = Graphics.FromImage(newImage))
+                    using (Bitmap newImage = new Bitmap(newSize.Width, newSize.Height, PixelFormat.Format24bppRgb))
                     {
-                        canvas.SmoothingMode = SmoothingMode.AntiAlias;
-                        canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                        canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        canvas.DrawImage(oldImage, new Rectangle(new Point(0, 0), newSize));
-                        MemoryStream m = new MemoryStream();
-                        newImage.Save(m, ImageFormat.Jpeg);
-                        return m;
+                        using (Graphics canvas = Graphics.FromImage(newImage))
+                        {
+                            canvas.SmoothingMode = SmoothingMode.AntiAlias;
+                            canvas.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                            canvas.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                            canvas.DrawImage(oldImage, new Rectangle(new Point(0, 0), newSize));
+                            MemoryStream m = new MemoryStream();
+                            newImage.Save(m, ImageFormat.Jpeg);
+                            return m;
+                        }
                     }
                 }
             }
+
+            return imageStream;
         }
 
         private static Size CalculateDimensions(Size oldSize, int maxSize)
         {
-            Size newSize = new Size();
+            Size newSize = new Size(oldSize.Width, oldSize.Height);
 
             if (oldSize.Height > oldSize.Width && oldSize.Height > maxSize)
             {

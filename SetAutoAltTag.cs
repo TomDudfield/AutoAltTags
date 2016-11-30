@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.ProjectOxford.Vision;
 using Sitecore.Data.Items;
 using Sitecore.Diagnostics;
 using Sitecore.Events;
@@ -38,7 +39,7 @@ namespace AutoAltTags
                     return;
 
 
-                if (!string.IsNullOrEmpty(ApiKey))
+                if (string.IsNullOrEmpty(ApiKey))
                 {
                     Log.Error("SetAutoAltTag: No API Key Specified - Module disabled", GetType());
                     return;
@@ -56,7 +57,11 @@ namespace AutoAltTags
                         }
                         catch (Exception ex)
                         {
-                            Log.Error("SetAutoAltTag: Excetion occured " + ex.Message, ex, GetType());
+                            var exception = ex.InnerException as ClientException;
+                            if (exception != null)
+                                Log.Error("SetAutoAltTag: " + exception.Error.Message, exception, GetType());
+                            else
+                                Log.Error("SetAutoAltTag: " + ex.Message, ex, GetType());
                         }
                     }
                 }
