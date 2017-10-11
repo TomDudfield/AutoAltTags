@@ -10,9 +10,10 @@ namespace AutoAltTags
     {
         private readonly string _apiKey;
 
-        public DescribeImage(string apiKey)
+        public DescribeImage(string apiKey, string defaultApiRoot)
         {
             _apiKey = apiKey;
+            _defaultApiRoot = defaultApiRoot;
         }
 
         public string GetDescription(Stream stream)
@@ -29,7 +30,7 @@ namespace AutoAltTags
                     bitmap.Save(outputStream, ImageFormat.Jpeg);
                     outputStream.Position = 0;
 
-                    VisionServiceClient visionServiceClient = new VisionServiceClient(_apiKey);
+                    VisionServiceClient visionServiceClient = new VisionServiceClient(_apiKey, _defaultApiRoot);
                     var analysisResult = visionServiceClient.DescribeAsync(outputStream);
 
                     if (analysisResult.Result.Description.Captions != null && analysisResult.Result.Description.Captions.Any())

@@ -11,12 +11,13 @@ namespace AutoAltTags
     public class SetAutoAltTag
     {
         public string ApiKey { get; set; }
+        public string DefaultApiRoot { get; set; }
 
         protected void OnItemSaved(object sender, EventArgs args)
         {
             if (args == null)
                 return;
-            
+
             SitecoreEventArgs sitecoreArgs = args as SitecoreEventArgs;
             Assert.IsNotNull(sitecoreArgs, "eventArgs");
 
@@ -45,7 +46,12 @@ namespace AutoAltTags
                     return;
                 }
 
-                var describeImage = new DescribeImage(ApiKey);
+                if (string.IsNullOrEmpty(DefaultApiRoot))
+                {
+                  DefaultApiRoot = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0";
+                }
+
+                var describeImage = new DescribeImage(ApiKey, DefaultApiRoot);
 
                 using (new SecurityDisabler())
                 {
